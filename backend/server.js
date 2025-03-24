@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const db = require('./database');
+require('dotenv').config();
 const app = express();
 
 const cors = require('cors');
@@ -311,7 +312,7 @@ app.get('/user/:id/completed-questions', (req, res) => {
 });
 
 // Start the server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

@@ -6,9 +6,11 @@
 	let topic: string = '';
 	let paper: string = '';
 	let min_points: number = 0;
-	let limit: number = 10;
+	let limit: number | null = null; // Use null instead of 10 for no limit
 
 	let questions: any[] = [];
+
+	const BACKEND_IP = import.meta.env.VITE_BACKEND_IP; // Use the environment variable
 
 	// Fetch random questions based on the selected filters
 	const fetchRandomQuestions = async () => {
@@ -20,9 +22,9 @@
 			if (subject) params.append('subject', subject);
 			if (topic) params.append('topic', topic);
 			if (min_points) params.append('min_points', min_points.toString());
-			if (limit) params.append('limit', limit.toString());
+			if (limit !== null) params.append('limit', limit.toString());
 
-			const res = await fetch(`http://localhost:3000/random-questions?${params.toString()}`);
+			const res = await fetch(`${BACKEND_IP}/random-questions?${params.toString()}`);
 			if (res.ok) {
 				questions = await res.json();
 			} else {
@@ -84,12 +86,11 @@
 
 		<label for="limit">Limit:</label>
 		<select id="limit" bind:value={limit}>
-			<option value="">Select Limit</option>
+			<option value="">None (Select All)</option>
 			<option value="10">10</option>
 			<option value="20">20</option>
 			<option value="50">50</option>
 			<option value="100">100</option>
-			<option value="">None (Select All)</option>
 		</select>
 
 		<!-- Find Questions Button -->

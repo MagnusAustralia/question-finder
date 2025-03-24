@@ -14,10 +14,12 @@
 	let questions: Question[] = [];
 	let error: string | null = null;
 
+	const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
+
 	// Fetch questions when the component mounts
 	onMount(async () => {
 		try {
-			const res = await fetch('http://localhost:3000/questions');
+			const res = await fetch(`${BACKEND_IP}/questions`);
 			if (res.ok) {
 				// Type assertion as we expect the response to be a list of questions
 				questions = (await res.json()) as Question[];
@@ -32,7 +34,7 @@
 	// Function to fetch image as base64
 	const getImageBase64 = async (questionId: number): Promise<string> => {
 		try {
-			const res = await fetch(`http://localhost:3000/question/${questionId}/image`);
+			const res = await fetch(`${BACKEND_IP}/question/${questionId}/image`);
 			if (!res.ok) {
 				throw new Error('Failed to fetch image');
 			}
